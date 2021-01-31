@@ -1,0 +1,178 @@
+<script src="/scripts/client/design_patterns/observer.js" defer></script>
+
+<h1>The Observer Pattern </h1>
+<nav>
+    <ul>
+        <li><a href=""></a></li>
+    </ul>
+</nav>
+
+<section id="">
+    <p>The Observer is a design pattern where an object (known as a subject) maintains a list of objects depending on it (observers), automatically notifying them of any changes to state.</p>
+    <p>When a subject needs to notify observers about something interesting happening, it broadcasts a notification to the observers (which can include specific data related to the topic of the notification).</p>
+    <p>When we no longer wish for a particular observer to be notified of changes by the subject they are registered with, the subject can remove them from the list of observers.</p>
+    <p>It's often useful to refer back to published definitions of design patterns that are language agnostic adj. 不可知论的；怀疑的 to get a broader sense of their usage and advantages over time. The definition of the Observer pattern provided in the GoF book, Design Patterns: Elements of Reusable Object-Oriented Software, is:</p>
+    <q>One or more observers are interested in the state of a subject and register their interest with the subject by attaching themselves. When something changes in our subject that the observer may be interested in, a notify message is sent which calls the update method in each observer. When the observer is no longer interested in the subject's state, they can simply detach themselves</q>
+    <p>We can now expand on what we've learned to implement the Observer pattern with the following components:</p>
+    <ul>
+        <li><strong>Subject</strong>: maintains a list of observers, facilitates vt. 促进；帮助；使容易 adding or removing observers</li>
+        <li><strong>Observer</strong>: provides an update interface for objects that need to be notified of a Subject's changes of state</li>
+        <li><strong>ConcreteSubject</strong>: concrete 实在的，具体的；有形的 broadcasts notifications to observers on changes of state, stores the state of ConcreteObservers</li>
+        <li><strong>ConcreteObserver</strong>: stores a reference to the ConcreteSubject, implements an update interface for the Observer to ensure state is consistent with the Subject's</li>
+    </ul>
+    <p>First, let's model the list of dependent Observers a subject may have:</p>
+    <pre><code>
+        function ObserverList(){
+            this.observerList = [];
+          }
+           
+          ObserverList.prototype.add = function( obj ){
+            return this.observerList.push( obj );
+          };
+           
+          ObserverList.prototype.count = function(){
+            return this.observerList.length;
+          };
+           
+          ObserverList.prototype.get = function( index ){
+            if( index &gt; -1 &amp;&amp; index &lt; this.observerList.length ){
+              return this.observerList[ index ];
+            }
+          };
+           
+          ObserverList.prototype.indexOf = function( obj, startIndex ){
+            var i = startIndex;
+           
+            while( i &lt; this.observerList.length ){
+              if( this.observerList[i] === obj ){
+                return i;
+              }
+              i++;
+            }
+           
+            return -1;
+          };
+           
+          ObserverList.prototype.removeAt = function( index ){
+            this.observerList.splice( index, 1 );
+          };
+    </code></pre>
+    <p>Next, let's model the Subject and the ability to add, remove or notify observers on the observer list.</p>
+    <pre><code>
+        function Subject(){
+            this.observers = new ObserverList();
+          }
+           
+          Subject.prototype.addObserver = function( observer ){
+            this.observers.add( observer );
+          };
+           
+          Subject.prototype.removeObserver = function( observer ){
+            this.observers.removeAt( this.observers.indexOf( observer, 0 ) );
+          };
+           
+          Subject.prototype.notify = function( context ){
+            var observerCount = this.observers.count();
+            for(var i=0; i &lt; observerCount; i++){
+              this.observers.get(i).update( context );
+            }
+          };
+    </code></pre>
+    <p>We then define a skeleton for creating new Observers. The update functionality here will be overwritten later with custom behaviour. </p>
+    <pre><code>
+        // The Observer
+function Observer(){
+  this.update = function(){
+    // ...
+  };
+}
+    </code></pre>
+    <p>In our sample application using the above Observer components, we now define:</p>
+    <ul>
+        <li>A button for adding new observable checkboxes to the page</li>
+        <li>A control checkbox which will act as a subject, notifying other checkboxes they should be checked</li>
+        <li>A container for the new checkboxes being added</li>
+    </ul>
+    <p>We then define ConcreteSubject and ConcreteObserver handlers for both adding new observers to the page and implementing the updating interface. See below for inline comments on what these components do in the context of our example.</p>
+    <pre><code>
+&lt;button id=&quot;addNewObserver&quot;&gt;Add New Observer checkbox&lt;/button&gt;
+&lt;input id=&quot;mainCheckbox&quot; type=&quot;checkbox&quot;/&gt;
+&lt;div id=&quot;observersContainer&quot;&gt;&lt;/div&gt;
+    </code></pre>
+    <pre><code>
+// Extend an object with an extension
+function extend( obj, extension ){
+  for ( var key in extension ){
+    obj[key] = extension[key];
+  }
+}
+ 
+// References to our DOM elements
+ 
+var controlCheckbox = document.getElementById( &quot;mainCheckbox&quot; ),
+  addBtn = document.getElementById( &quot;addNewObserver&quot; ),
+  container = document.getElementById( &quot;observersContainer&quot; );
+ 
+ 
+// Concrete Subject
+ 
+// Extend the controlling checkbox with the Subject class
+extend( controlCheckbox, new Subject() );
+ 
+// Clicking the checkbox will trigger notifications to its observers
+controlCheckbox.onclick = function(){
+  controlCheckbox.notify( controlCheckbox.checked );
+};
+ 
+addBtn.onclick = addNewObserver;
+ 
+// Concrete Observer
+ 
+function addNewObserver(){
+ 
+  // Create a new checkbox to be added
+  var check = document.createElement( &quot;input&quot; );
+  check.type = &quot;checkbox&quot;;
+ 
+  // Extend the checkbox with the Observer class
+  extend( check, new Observer() );
+ 
+  // Override with custom update behaviour
+  check.update = function( value ){
+    this.checked = value;
+  };
+ 
+  // Add the new observer to our list of observers
+  // for our main subject
+  controlCheckbox.addObserver( check );
+ 
+  // Append the item to the container
+  container.appendChild( check );
+}
+    </code></pre>
+    <p>In this example, we looked at how to implement and utilize the Observer pattern, covering the concepts of a Subject, Observer, ConcreteSubject and ConcreteObserver.</p>
+</section>
+
+<section id="">
+    <h2></h2>
+</section>
+
+<section id="">
+    <h3></h3>
+</section>
+<section id="">
+    <h4></h4>
+</section>
+
+
+
+<section>
+    <p>A button for adding new observable checkboxes to the page</p>
+    <p>Concrete Observer</p>
+    <button id="addNewObserver">Add New Observer checkbox</button>
+    <p>A control checkbox which will act as a subject, notifying other checkboxes they should be checked</p>
+    <p>Concrete Subject</p>
+    <input id="mainCheckbox" type="checkbox" />
+    <p>A container for the new checkboxes being added</p>
+    <div id="observersContainer"></div>
+</section>

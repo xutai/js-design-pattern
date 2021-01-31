@@ -1,0 +1,419 @@
+
+
+<section>
+    <h2>The Module Pattern</h2>
+    <section>
+        <h3>Modules</h3>
+        <p>Modules are an integral adj. 积分的；完整的，整体的；构成整体所必须的 piece of any robust application's
+            architecture and typically help in keeping the units of code for a project both cleanly
+            separated and organized.</p>
+        <p>In JavaScript, there are several options for implementing modules. These include:</p>
+        <ul>
+            <li>The Module pattern</li>
+            <li>Object literal notation</li>
+            <li>AMD modules</li>
+            <li>CommonJS modules</li>
+            <li>ECMAScript Harmony modules</li>
+        </ul>
+    </section>
+    <section>
+        <h3>Object Literals</h3>
+        <pre><code>
+// var myModule = {
+
+    //     myProperty: "someValue",
+
+    //     // object literals can contain properties and methods.
+    //     // e.g we can define a further object for module configuration:
+    //     myConfig: {
+    //         useCaching: true,
+    //         language: "en"
+    //     },
+
+    //     // a very basic method
+    //     saySomething: function () {
+    //         console.log("Where in the world is Paul Irish today?");
+    //     },
+
+    //     // output a value based on the current configuration
+    //     reportMyConfig: function () {
+    //         console.log("Caching is: " + (this.myConfig.useCaching ? "enabled" : "disabled"));
+    //     },
+
+    //     // override the current configuration
+    //     updateMyConfig: function (newConfig) {
+
+    //         if (typeof newConfig === "object") {
+    //             this.myConfig = newConfig;
+    //             console.log(this.myConfig.language);
+    //         }
+    //     }
+    // };
+
+    // // Outputs: Where in the world is Paul Irish today?
+    // myModule.saySomething();
+
+    // // Outputs: Caching is: enabled
+    // myModule.reportMyConfig();
+
+    // // Outputs: fr
+    // myModule.updateMyConfig({
+    //     language: "fr",
+    //     useCaching: false
+    // });
+
+    // // Outputs: Caching is: disabled
+    // myModule.reportMyConfig();
+        </code></pre>
+        <script>
+            // var myModule = {
+
+            //     myProperty: "someValue",
+
+            //     // object literals can contain properties and methods.
+            //     // e.g we can define a further object for module configuration:
+            //     myConfig: {
+            //         useCaching: true,
+            //         language: "en"
+            //     },
+
+            //     // a very basic method
+            //     saySomething: function () {
+            //         console.log("Where in the world is Paul Irish today?");
+            //     },
+
+            //     // output a value based on the current configuration
+            //     reportMyConfig: function () {
+            //         console.log("Caching is: " + (this.myConfig.useCaching ? "enabled" : "disabled"));
+            //     },
+
+            //     // override the current configuration
+            //     updateMyConfig: function (newConfig) {
+
+            //         if (typeof newConfig === "object") {
+            //             this.myConfig = newConfig;
+            //             console.log(this.myConfig.language);
+            //         }
+            //     }
+            // };
+
+            // // Outputs: Where in the world is Paul Irish today?
+            // myModule.saySomething();
+
+            // // Outputs: Caching is: enabled
+            // myModule.reportMyConfig();
+
+            // // Outputs: fr
+            // myModule.updateMyConfig({
+            //     language: "fr",
+            //     useCaching: false
+            // });
+
+            // // Outputs: Caching is: disabled
+            // myModule.reportMyConfig();
+        </script>
+        <p>Using object literals can assist in encapsulating n. 封装 and organizing your code</p>
+        <p>object literals vs the module pattern</p>
+        <p>That said, if we're opting for this technique, we may be equally as interested in the
+            Module pattern. It still uses object literals but only as the return value from a
+            scoping function. </p>
+    </section>
+    <section>
+        <h3>The Module Pattern</h3>
+        <p> include both public/private methods and variables inside a single object, thus shielding
+            particular parts from the global scope. </p>
+        <p>What this results in is a reduction in the likelihood of our function names conflicting
+            with other functions defined in additional scripts on the page.</p>
+        <section>
+            <h4>Privacy</h4>
+            <p>The Module pattern encapsulates "privacy", state and organization using closures.
+            </p>
+            <p>It provides a way of wrapping a mix of public and private methods and variables,
+                protecting pieces from leaking into the global scope and accidentally colliding with
+                another developer's interface.</p>
+            <p>With this pattern, only a public API is returned, keeping everything else within the
+                closure private. </p>
+            <hr>
+            <p>This gives us a clean solution for shielding logic doing the heavy lifting whilst
+                only exposing an interface we wish other parts of our application to use. </p>
+            <p>The pattern utilizes an immediately-invoked function expression (IIFE - see the
+                section on namespacing patterns for more on this) where an object is returned. </p>
+            <hr>
+            <p>Within the Module pattern, variables or methods declared are only available inside
+                the module itself thanks to closure. Variables or methods defined within the
+                returning object however are available to everyone. </p>
+            <p><a
+                    href="https://developer.mozilla.org/en-US/docs/Glossary/IIFE">https://developer.mozilla.org/en-US/docs/Glossary/IIFE</a>
+            </p>
+        </section>
+        <section>
+            <h4>History</h4>
+            <p>Douglas Crockford lectures</p>
+        </section>
+        <section>
+            <h4>Examples</h4>
+            <pre><code>script</code></pre>
+            <script>
+                                    // var testModule = (function () {
+
+                                    //     var counter = 0;
+
+                                    //     return {
+
+                                    //         incrementCounter: function () {
+                                    //             return counter++;
+                                    //         },
+
+                                    //         resetCounter: function () {
+                                    //             console.log("counter value prior to reset: " + counter);
+                                    //             counter = 0;
+                                    //         }
+                                    //     };
+
+                                    // })();
+
+                                    // // Usage:
+
+                                    // // Increment our counter
+                                    // testModule.incrementCounter();
+
+                                    // // Check the counter value and reset
+                                    // // Outputs: counter value prior to reset: 1
+                                    // testModule.resetCounter();
+            </script>
+            <p>define a simple template, covers namespacing, public and private variables</p>
+            <pre><code>script</code></pre>
+            <script>
+                                    // var myNamespace = (function () {
+
+                                    //     var myPrivateVar, myPrivateMethod;
+
+                                    //     // A private counter variable
+                                    //     myPrivateVar = 0;
+
+                                    //     // A private function which logs any arguments
+                                    //     myPrivateMethod = function (foo) {
+                                    //         console.log(foo);
+                                    //     };
+
+                                    //     return {
+
+                                    //         // A public variable
+                                    //         myPublicVar: "foo",
+
+                                    //         // A public function utilizing privates
+                                    //         myPublicFunction: function (bar) {
+
+                                    //             // Increment our private counter
+                                    //             myPrivateVar++;
+
+                                    //             // Call our private method using bar
+                                    //             myPrivateMethod(bar);
+
+                                    //         }
+                                    //     };
+
+                                    // })();
+            </script>
+            <p>shopping basket</p>
+            <p class="note">this is useful</p>
+            <pre><code>script</code></pre>
+            <script>
+                                    // var basketModule = (function () {
+
+                                    //     // privates
+
+                                    //     var basket = [];
+
+                                    //     function doSomethingPrivate() {
+                                    //         //...
+                                    //     }
+
+                                    //     function doSomethingElsePrivate() {
+                                    //         //...
+                                    //     }
+
+                                    //     // Return an object exposed to the public
+                                    //     return {
+
+                                    //         // Add items to our basket
+                                    //         addItem: function (values) {
+                                    //             basket.push(values);
+                                    //         },
+
+                                    //         // Get the count of items in the basket
+                                    //         getItemCount: function () {
+                                    //             return basket.length;
+                                    //         },
+
+                                    //         // Public alias to a private function
+                                    //         doSomething: doSomethingPrivate,
+
+                                    //         // Get the total value of items in the basket
+                                    //         getTotal: function () {
+
+                                    //             var q = this.getItemCount(),
+                                    //                 p = 0;
+
+                                    //             while (q--) {
+                                    //                 p += basket[q].price;
+                                    //             }
+
+                                    //             return p;
+                                    //         }
+                                    //     };
+                                    // })();
+            </script>
+            <p> interact with it </p>
+            <pre><code>script</code></pre>
+            <script>
+                                    // // basketModule returns an object with a public API we can use
+
+                                    // basketModule.addItem({
+                                    //     item: "bread",
+                                    //     price: 0.5
+                                    // });
+
+                                    // basketModule.addItem({
+                                    //     item: "butter",
+                                    //     price: 0.3
+                                    // });
+
+                                    // // Outputs: 2
+                                    // console.log(basketModule.getItemCount());
+
+                                    // // Outputs: 0.8
+                                    // console.log(basketModule.getTotal());
+
+                                    // // However, the following will not work:
+
+                                    // // Outputs: undefined
+                                    // // This is because the basket itself is not exposed as a part of our
+                                    // // public API
+                                    // console.log(basketModule.basket);
+
+                                    // // This also won't work as it only exists within the scope of our
+                                    // // basketModule closure, but not in the returned public object
+                                    // console.log(basket);
+            </script>
+            <p>The methods above are effectively namespaced inside basketModule.</p>
+            <p> advantages </p>
+            <ul>
+                <li>The freedom to have private functions and private members which can only be
+                    consumed by our module. As they aren't exposed to the rest of the page (only our
+                    exported API is), they're considered truly private.</li>
+                <li>Given that functions are declared normally and are named, it can be easier to
+                    show call stacks in a debugger when we're attempting to discover what
+                    function(s) threw an exception.</li>
+                <li>As T.J Crowder has pointed out in the past, it also enables us to return
+                    different functions depending on the environment. In the past, I've seen
+                    developers use this to perform UA testing in order to provide a code-path in
+                    their module specific to IE, but we can easily opt for feature detection these
+                    days to achieve a similar goal.</li>
+            </ul>
+        </section>
+        <section>
+            <h4>Module Pattern Variation</h4>
+            <section>
+                <h5>Import mixins</h5>
+                <p>mixins 混入 混合 混入类 多态</p>
+                <p>This variation of the pattern demonstrates how globals (e.g jQuery, Underscore)
+                    can be passed in as arguments to our module's anonymous function. </p>
+                <p> This effectively allows us to import them and locally alias them as we wish.</p>
+                <pre><code>script</code></pre>
+                <script>
+                                        // // Global module
+                                        // var myModule = (function (jQ, _) {
+
+                                        //     function privateMethod1() {
+                                        //         jQ(".container").html("test");
+                                        //     }
+
+                                        //     function privateMethod2() {
+                                        //         console.log(_.min([10, 5, 100, 2, 1000]));
+                                        //     }
+
+                                        //     return {
+                                        //         publicMethod: function () {
+                                        //             privateMethod1();
+                                        //         }
+                                        //     };
+
+                                        //     // Pull in jQuery and Underscore
+                                        // })(jQuery, _);
+
+                                        // myModule.publicMethod();
+                </script>
+            </section>
+            <section>
+                <h5>Exports</h5>
+                <p>This next variation allows us to declare globals without consuming them and could
+                    similarly support the concept of global imports seen in the last example.</p>
+                <pre><code></code></pre>
+                <script>
+                    // Global module
+                    var myModule = (function () {
+
+                        // Module object
+                        var module = {},
+                            privateVariable = "Hello World";
+
+                        function privateMethod() {
+                            // ...
+                        }
+
+                        module.publicProperty = "Foobar";
+                        module.publicMethod = function () {
+                            console.log(privateVariable);
+                        };
+
+                        return module;
+
+                    })();
+                </script>
+            </section>
+        </section>
+        <section>
+            <h4>Toolkit And Framework-specific Module Pattern Implementations</h4>
+            <section>
+                <h5>Dojo</h5>
+            </section>
+            <section>
+                <h5>ExtJS</h5>
+            </section>
+            <section>
+                <h5>YUI</h5>
+            </section>
+            <section>
+                <h5>jQuery</h5>
+            </section>
+            <section>
+                <h5>advantages</h5>
+                <p>We've seen why the Constructor pattern can be useful, but why is the Module pattern a good choice?
+                    For starters, it's a lot cleaner for developers coming from an object-oriented background than the
+                    idea of true encapsulation, at least from a JavaScript perspective</p>
+                <p>Secondly, it supports private data - so, in the Module pattern, public parts of our code are able to
+                    touch the private parts, however the outside world is unable to touch the class's private parts (no
+                    laughing! Oh, and thanks to David Engfer for the joke).</p>
+            </section>
+            <section>
+                <h5>Disadvantages</h5>
+                <p>The disadvantages of the Module pattern are that as we access both public and private members
+                    differently, when we wish to change visibility, we actually have to make changes to each place the
+                    member was used.</p>
+                <p>We also can't access private members in methods that are added to the object at a later point. That
+                    said, in many cases the Module pattern is still quite useful and when used correctly, certainly has
+                    the potential to improve the structure of our application.</p>
+                <li>Other disadvantages include the inability to create automated unit tests for private members and
+                    additional complexity when bugs require hot fixes. It's simply not possible to patch privates.
+                    Instead, one must override all public methods which interact with the buggy privates. Developers
+                    can't easily extend privates either, so it's worth remembering privates are not as flexible as they
+                    may initially appear.</li>
+            </section>
+        </section>
+    </section>
+
+    <section>
+        <h3></h3>
+    </section>
+</section>

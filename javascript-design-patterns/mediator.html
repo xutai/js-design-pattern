@@ -1,0 +1,104 @@
+<section>
+    <h2>The Mediator Pattern</h2>
+    <p>In the section on the Observer pattern, we were introduced to a way of channeling multiple
+        event sources through a single object. This is also known as Publish/Subscribe or Event
+        Aggregation. It's common for developers to think of Mediators when faced with this problem,
+        so let's explore how they differ. </p>
+    <p>The dictionary refers to a mediator as a neutral party that assists in negotiations and
+        conflict resolution. In our world, a mediator is a behavioral design pattern that allows us
+        to expose a unified interface through which the different parts of a system may communicate.
+    </p>
+    <p>If it appears a system has too many direct relationships between components, it may be time
+        to have a central point of control that components communicate through instead. The Mediator
+        promotes loose coupling by ensuring that instead of components referring to each other
+        explicitly, their interaction is handled through this central point. This can help us
+        decouple systems and improve the potential for component reusability. </p>
+    <p>A real-world analogy could be a typical airport traffic control system. A tower (Mediator)
+        handles what planes can take off and land because all communications (notifications being
+        listened out for or broadcast) are done from the planes to the control tower, rather than
+        from plane-to-plane. A centralized controller is key to the success of this system and
+        that's really the role a Mediator plays in software design.</p>
+    <p>Another analogy would be DOM event bubbling and event delegation. If all subscriptions in a
+        system are made against the document rather than individual nodes, the document effectively
+        serves as a Mediator. Instead of binding to the events of the individual nodes, a higher
+        level object is given the responsibility of notifying subscribers about interaction events.
+    </p>
+    <p>When it comes to the Mediator and Event Aggregator patterns, there are some times where it
+        may look like the patterns are interchangeable due to implementation similarities. However,
+        the semantics and intent of these patterns are very different.</p>
+    <p>And even if the implementations both use some of the same core constructs, I believe there is
+        a distinct difference between them. I also believe they should not be interchanged or
+        confused in communication because of the differences.</p>
+    <section>
+        <section>
+            <h4>A Simple Mediator</h3>
+                <p>A Mediator is an object that coordinates interactions (logic and behavior)
+                    between
+                    multiple objects. It makes decisions on when to call which objects, based on the
+                    actions
+                    (or inaction) of other objects and input.</p>
+                <pre><code>script</code></pre>
+                <script>
+                    var mediator = {};
+
+                    var orgChart = {
+
+                        addNewEmployee: function () {
+
+                            // getEmployeeDetail provides a view that users interact with
+                            var employeeDetail = this.getEmployeeDetail();
+
+                            // when the employee detail is complete, the mediator (the 'orgchart' object)
+                            // decides what should happen next
+                            employeeDetail.on("complete", function (employee) {
+
+                                // set up additional objects that have additional events, which are used
+                                // by the mediator to do additional things
+                                var managerSelector = this.selectManager(employee);
+                                managerSelector.on("save", function (employee) {
+                                    employee.save();
+                                });
+
+                            });
+                        },
+
+                        // ...
+                    }
+                </script>
+                <p>This example shows a very basic implementation of a mediator object with some
+                    utility methods that can trigger and subscribe to events.</p>
+                <p>I’ve often referred to this type of object as a “workflow” object in the past,
+                    but the truth is that it is a mediator. It is an object that handles the
+                    workflow between many other objects, aggregating the responsibility of that
+                    workflow knowledge into a single object. The result is workflow that is easier
+                    to understand and maintain.</p>
+        </section>
+        <section>
+            <h4>Similarities And Differences</h3>
+        </section>
+        <section>
+            <h4>Events</h3>
+        </section>
+        <section>
+            <h4>Third-Party Objects</h3>
+        </section>
+        <section>
+            <h4>Relationships: When To Use Which</h3>
+        </section>
+        <section>
+            <h4>Event Aggregator Use</h3>
+        </section>
+        <section>
+            <h4>Mediator Use</h3>
+        </section>
+        <section>
+            <h4>Event Aggregator (Pub/Sub) And Mediator Together</h3>
+        </section>
+    </section>
+    <section>
+        <h3>Advantages & Disadvantages </h3>
+    </section>
+    <section>
+        <h3>Mediator Vs. Facade </h3>
+    </section>
+</section>
